@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Personalized Diet Recommendation</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: url('https://images.unsplash.com/photo-1604908177092-8166f0c22a1c');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            padding: 40px;
+            backdrop-filter: brightness(90%) contrast(110%);
+        }
+        .form-container {
+            max-width: 700px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+    <script>
+        function validateForm() {
+            const age = parseInt(document.getElementById("age").value);
+            const height = parseFloat(document.getElementById("height").value);
+
+            if (isNaN(age) || age < 5 || age > 100) {
+                alert("Please enter a valid age between 5 and 100.");
+                return false;
+            }
+
+            if (isNaN(height) || height < 50 || height > 250) {
+                alert("Please enter a valid height between 50 cm and 250 cm.");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Personalized Diet Recommendation</h1>
+        <form action="/result" method="post" onsubmit="return validateForm();">
+            <label for="age">Age:</label>
+            <input type="number" id="age" name="age" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
+            <label for="height">Height (cm):</label>
+            <input type="number" id="height" name="height" step="0.1" required>
+
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" name="weight" step="0.1" required>
+
+            <label for="meals">Meals Per Day:</label>
+            <input type="number" id="meals" name="meals" required>
+
+            <label for="exercise">Exercise Intensity:</label>
+            <select id="exercise" name="exercise" required>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+            </select>
+
+            <label for="goal">Weight Goal:</label>
+            <select id="goal" name="goal" required>
+                <option value="Lose">Lose</option>
+                <option value="Maintain">Maintain</option>
+                <option value="Gain">Gain</option>
+            </select>
+
+            <button type="submit">Get Diet Plan</button>
+        </form>
+    </div>
+</body>
+</html>
