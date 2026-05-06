@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DR Detection – Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="page-wrapper">
+
+    <header class="app-header">
+        <div class="title-group">
+            <h1>Diabetic Retinopathy Detection</h1>
+        </div>
+        <button class="btn btn-danger">Logout</button>
+    </header>
+
+    <main class="main-card">
+        <!-- Left side: Upload again -->
+        <section class="upload-section">
+            <div class="upload-inner">
+                <h2>Upload Fundus Image</h2>
+                <p>Select another image to analyze again.</p>
+
+                <form method="POST" enctype="multipart/form-data" action="{{ url_for('index') }}" class="upload-form">
+                    <input type="file" id="fileInput" name="file" accept="image/*" required hidden>
+
+                    <div class="button-row">
+                        <label for="fileInput" class="btn btn-primary">Choose Image</label>
+                        <button type="submit" class="btn btn-success">Analyze Image</button>
+                    </div>
+
+                    <p id="fileName" class="file-name">Last uploaded: {{ filename }}</p>
+                </form>
+            </div>
+        </section>
+
+        <!-- Right side: Result -->
+        <section class="result-section">
+            <h3>Analysis Result</h3>
+
+            <div class="result-card">
+                <!-- Badge + confidence -->
+                <div class="badge-row">
+                    {% if prediction == "No_DR" %}
+                        <span class="status-badge status-good">No DR</span>
+                    {% elif prediction == "Mild" %}
+                        <span class="status-badge status-mild">Mild</span>
+                    {% elif prediction == "Moderate" %}
+                        <span class="status-badge status-moderate">Moderate</span>
+                    {% elif prediction == "Severe" %}
+                        <span class="status-badge status-severe">Severe</span>
+                    {% else %}
+                        <span class="status-badge status-proliferate">Proliferate DR</span>
+                    {% endif %}
+                    <span class="confidence-text">Confidence: {{ confidence }}</span>
+                </div>
+
+                <!-- Image -->
+                <div class="image-wrapper">
+                    <img src="{{ url_for('uploaded_file', filename=filename) }}"
+                         alt="Fundus Image" class="fundus-image">
+                </div>
+
+                <!-- NEW: Description + Precautions -->
+                <div class="dr-details">
+                    <h4>Stage Description</h4>
+                    <p>{{ description }}</p>
+
+                    <h4>Recommended Precautions</h4>
+                    <ul class="precautions-list">
+                        {% for item in precautions %}
+                            <li>{{ item }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+    const fileInput = document.getElementById('fileInput');
+    const fileName = document.getElementById('fileName');
+
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            fileName.textContent = 'Selected: ' + fileInput.files[0].name;
+        }
+    });
+</script>
+</body>
+</html>
